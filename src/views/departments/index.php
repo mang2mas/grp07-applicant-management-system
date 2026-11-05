@@ -48,7 +48,7 @@ require SRC_PATH . '/views/partials/header.php';
         <h1 class="text-2xl font-semibold">Departments</h1>
         <p class="mt-1 text-sm text-gray-600">Organize the departments that offer job positions.</p>
     </div>
-    <a href="<?= e(url('department_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Add department</a>
+    <?php if (!is_viewer()): ?><a href="<?= e(url('department_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Add department</a><?php endif; ?>
 </div>
 
 <div class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -85,7 +85,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <th class="px-4 py-3">Department</th>
                     <th class="px-4 py-3">Description</th>
                     <th class="px-4 py-3">Positions</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -101,7 +101,7 @@ require SRC_PATH . '/views/partials/header.php';
                         </a>
                     </td>
                     <td class="px-4 py-3">
-                        <div class="flex items-center justify-end gap-3">
+                        <?php if (!is_viewer()): ?><div class="flex items-center justify-end gap-3">
                             <a href="<?= e(url('department_form', ['id' => $department['department_id']])) ?>" class="text-indigo-600 hover:underline">Edit</a>
                             <?php if ((int) $department['position_count'] === 0): ?>
                                 <form method="post" action="index.php" class="inline" onsubmit="<?= js_confirm('Delete the department ' . $department['department_name'] . '? This cannot be undone.') ?>">
@@ -114,7 +114,7 @@ require SRC_PATH . '/views/partials/header.php';
                             <?php else: ?>
                                 <span class="text-xs text-gray-400" title="This department has positions and cannot be deleted.">In use</span>
                             <?php endif; ?>
-                        </div>
+                        </div><?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

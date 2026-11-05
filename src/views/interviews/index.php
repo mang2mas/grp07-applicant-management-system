@@ -87,10 +87,10 @@ require SRC_PATH . '/views/partials/header.php';
         </p>
     </div>
 
-    <a href="<?= e(url('interview_form')) ?>"
+    <?php if (!is_viewer()): ?><a href="<?= e(url('interview_form')) ?>"
        class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
         + Schedule Interview
-    </a>
+    </a><?php endif; ?>
 </div>
 
 <!-- Search and filters -->
@@ -162,7 +162,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <th class="px-4 py-3">Interview Date</th>
                     <th class="px-4 py-3">Interview Type</th>
                     <th class="px-4 py-3">Result</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
 
@@ -207,7 +207,7 @@ require SRC_PATH . '/views/partials/header.php';
                         </td>
 
                         <td class="px-4 py-3 text-right whitespace-nowrap">
-                            <a href="<?= e(url('interview_form', [
+                            <?php if (!is_viewer()): ?><a href="<?= e(url('interview_form', [
                                 'id' => $interview['interview_id']
                             ])) ?>"
                                class="text-indigo-600 hover:underline">
@@ -228,7 +228,7 @@ require SRC_PATH . '/views/partials/header.php';
                                         class="text-red-600 hover:underline">
                                     Delete
                                 </button>
-                            </form>
+                            </form><?php endif; ?>
                         </td>
                     </tr>
 

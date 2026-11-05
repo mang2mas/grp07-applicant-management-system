@@ -76,10 +76,10 @@ require SRC_PATH . '/views/partials/header.php';
         </p>
     </div>
 
-    <a href="<?= e(url('requirement_form')) ?>"
+    <?php if (!is_viewer()): ?><a href="<?= e(url('requirement_form')) ?>"
        class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
         + Add requirement
-    </a>
+    </a><?php endif; ?>
 </div>
 
 <form method="get" action="index.php"
@@ -127,7 +127,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <th class="px-4 py-3">Description</th>
                     <th class="px-4 py-3">Type</th>
                     <th class="px-4 py-3">Applicants Assigned</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
 
@@ -158,7 +158,7 @@ require SRC_PATH . '/views/partials/header.php';
                         </td>
 
                         <td class="px-4 py-3 text-right">
-                            <a
+                            <?php if (!is_viewer()): ?><a
                                 href="<?= e(url('requirement_form', [
                                     'id' => $requirement['requirement_id']
                                 ])) ?>"
@@ -194,7 +194,7 @@ require SRC_PATH . '/views/partials/header.php';
                                 <span class="ml-2 text-xs text-gray-400">
                                     In use
                                 </span>
-                            <?php endif; ?>
+                            <?php endif; ?><?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

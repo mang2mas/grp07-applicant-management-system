@@ -5,6 +5,7 @@
  */
 $pageTitle = $pageTitle ?? 'Applicant Management System';
 $activeNav = $activeNav ?? '';
+$hideNav   = $hideNav ?? false;   // true on the login screen
 
 $navGroups = [
     'applicants' => [
@@ -55,6 +56,7 @@ $flashes = flash_pull();
         <a href="<?= e(url('dashboard')) ?>" class="text-lg font-semibold tracking-tight">
             AMS <span class="font-normal text-slate-400">· Applicant Management System</span>
         </a>
+        <?php if (!$hideNav && is_logged_in()): ?>
         <nav class="flex flex-wrap items-center gap-2" aria-label="Main">
 
             <!-- Dashboard -->
@@ -105,6 +107,14 @@ $flashes = flash_pull();
             <?php endforeach; ?>
 
         </nav>
+        <form method="post" action="index.php" class="flex items-center gap-3 text-sm">
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="logout">
+            <span class="text-slate-300"><?= e($_SESSION['username'] ?? '') ?>
+                <span class="ml-1 rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-200"><?= e($_SESSION['role'] ?? '') ?></span></span>
+            <button type="submit" class="rounded-md px-3 py-1.5 font-medium text-slate-300 ring-1 ring-inset ring-slate-600 hover:bg-slate-800 hover:text-white">Logout</button>
+        </form>
+        <?php endif; ?>
     </div>
 </header>
 

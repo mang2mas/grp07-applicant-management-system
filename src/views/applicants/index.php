@@ -48,7 +48,7 @@ require SRC_PATH . '/views/partials/header.php';
         <h1 class="text-2xl font-semibold">Applicants</h1>
         <p class="mt-1 text-sm text-gray-600">Search, register, edit, and remove applicant records.</p>
     </div>
-    <a href="<?= e(url('applicant_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Register applicant</a>
+    <?php if (!is_viewer()): ?><a href="<?= e(url('applicant_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Register applicant</a><?php endif; ?>
 </div>
 
 <form method="get" action="index.php" class="mt-6 flex flex-col gap-3 rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-200 sm:flex-row sm:items-end">
@@ -85,7 +85,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <th class="px-4 py-3">Applications</th>
                     <th class="px-4 py-3">Latest status</th>
                     <th class="px-4 py-3">Registered</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -101,7 +101,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <td class="px-4 py-3"><?= status_badge($row['status_name']) ?></td>
                     <td class="px-4 py-3 whitespace-nowrap text-gray-600"><?= e(format_date($row['created_at'])) ?></td>
                     <td class="px-4 py-3">
-                        <div class="flex items-center justify-end gap-3">
+                        <?php if (!is_viewer()): ?><div class="flex items-center justify-end gap-3">
                             <a href="<?= e(url('applicant_form', ['id' => $row['applicant_id']])) ?>" class="text-indigo-600 hover:underline">Edit</a>
                             <form method="post" action="index.php" class="inline"
                                   onsubmit="<?= js_confirm('Delete ' . $fullName . '? This also permanently deletes their ' . $row['app_count'] . ' application(s), interviews, and requirement records.') ?>">
@@ -111,7 +111,7 @@ require SRC_PATH . '/views/partials/header.php';
                                 <input type="hidden" name="return_qs" value="<?= e($returnQs) ?>">
                                 <button type="submit" class="text-red-600 hover:underline">Delete</button>
                             </form>
-                        </div>
+                        </div><?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -134,6 +134,17 @@ INSERT INTO applicant_requirement (applicant_id, requirement_id, submitted_date,
 ON CONFLICT DO NOTHING;
 
 -- ---------------------------------------------------------------------
+-- USERS (3) - test logins for the web application.
+-- All three passwords are: password123   (change or delete outside a classroom demo)
+-- Values are PHP password_hash(..., PASSWORD_BCRYPT) hashes, not plain text.
+-- ---------------------------------------------------------------------
+INSERT INTO users (username, password_hash, role) VALUES
+    ('admin',  '$2y$10$ZRkFu97c0tTT1RmXOwmVp.55XRPpG/C6UsiMlfkb51RxqCHmtqhd2', 'Administrator'),
+    ('staff',  '$2y$10$dwBwlo7EO/XYl4xL9nN//OKwkVSgX.qjLQm6mA3tVEMMEHq7tqbUW', 'Staff'),
+    ('viewer', '$2y$10$4.bQkq78ibfAI2wMb22uxOdaxTUOtv0ukxt9V3rabhxXKRdxuvN2m', 'Viewer')
+ON CONFLICT (username) DO NOTHING;
+
+-- ---------------------------------------------------------------------
 -- Re-sync SERIAL sequences after inserting explicit IDs, so that new
 -- rows created through the application do not collide with seed rows.
 -- ---------------------------------------------------------------------

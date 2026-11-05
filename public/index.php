@@ -29,6 +29,7 @@ $pages = [
     'interviews'             => 'interviews/index.php',
     'interview_form'         => 'interviews/form.php',
     'status'                 => 'status.php',
+    'login'                  => 'login.php',
 ];
 
 $actions = [
@@ -48,7 +49,48 @@ $actions = [
     'applicant_requirement_remove' => 'applicant_requirement_remove.php',
     'interview_save'               => 'interview_save.php',
     'interview_delete'             => 'interview_delete.php',
+    'login_process'                => 'login_process.php',
+    'logout'                       => 'logout.php',
 ];
+
+/**
+ * Session guards. Only the login page and the login handler are public;
+ * every other page and action requires a signed-in session.
+ * A Viewer is read-only: no POST actions (except logout) and no create/edit forms.
+ */
+const PUBLIC_PAGES   = ['login'];
+const PUBLIC_ACTIONS = ['login_process'];
+
+function authorize_page(string $page): void
+{
+    if (in_array($page, PUBLIC_PAGES, true)) {
+        if (is_logged_in()) {
+            redirect(url('dashboard'));
+        }
+        return;
+    }
+    if (!is_logged_in()) {
+        flash_add('error', 'Please sign in to continue.');
+        redirect(url('login'));
+    }
+    if (is_viewer() && str_ends_with($page, '_form')) {
+        throw new HttpException(403, 'Your Viewer account is read-only.');
+    }
+}
+
+function authorize_action(string $action): void
+{
+    if (in_array($action, PUBLIC_ACTIONS, true)) {
+        return;
+    }
+    if (!is_logged_in()) {
+        flash_add('error', 'Please sign in to continue.');
+        redirect(url('login'));
+    }
+    if (is_viewer() && $action !== 'logout') {
+        throw new HttpException(403, 'Your Viewer account is read-only.');
+    }
+}
 
 ob_start();
 
@@ -61,6 +103,7 @@ try {
         if (!isset($actions[$action])) {
             throw new HttpException(400, 'Unknown action.');
         }
+        authorize_action($action);
         require SRC_PATH . '/actions/' . $actions[$action];
         exit; // Handlers always redirect; this is a safety net.
     }
@@ -70,6 +113,7 @@ try {
     }
 
     $page = (string) ($_GET['page'] ?? 'dashboard');
+    authorize_page($page);
     if (!isset($pages[$page])) {
         throw new HttpException(404, 'Page not found.');
     }
