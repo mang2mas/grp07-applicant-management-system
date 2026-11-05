@@ -14,21 +14,40 @@ declare(strict_types=1);
 require_once __DIR__ . '/../src/bootstrap.php';
 
 $pages = [
-    'dashboard'        => 'dashboard.php',
-    'applicants'       => 'applicants/index.php',
-    'applicant_form'   => 'applicants/form.php',
-    'applications'     => 'applications/index.php',
-    'application_form' => 'applications/form.php',
-    'positions'        => 'positions/index.php',
-    'status'           => 'status.php',
+    'dashboard'              => 'dashboard.php',
+    'applicants'             => 'applicants/index.php',
+    'applicant_form'         => 'applicants/form.php',
+    'applications'           => 'applications/index.php',
+    'application_form'       => 'applications/form.php',
+    'positions'              => 'positions/index.php',
+    'departments'            => 'departments/index.php',
+    'department_form'        => 'departments/form.php',
+    'position_form'          => 'positions/form.php',
+    'requirements'           => 'requirements/index.php',
+    'requirement_form'       => 'requirements/form.php',
+    'applicant_requirements' => 'applicant_requirements/index.php',
+    'interviews'             => 'interviews/index.php',
+    'interview_form'         => 'interviews/form.php',
+    'status'                 => 'status.php',
 ];
 
 $actions = [
-    'applicant_save'     => 'applicant_save.php',
-    'applicant_delete'   => 'applicant_delete.php',
-    'application_create' => 'application_create.php',
-    'application_status' => 'application_status.php',
-    'application_delete' => 'application_delete.php',
+    'applicant_save'               => 'applicant_save.php',
+    'position_save'                => 'position_save.php',
+    'position_delete'              => 'position_delete.php',
+    'department_save'              => 'department_save.php',
+    'department_delete'            => 'department_delete.php',
+    'applicant_delete'             => 'applicant_delete.php',
+    'application_create'           => 'application_create.php',
+    'application_status'           => 'application_status.php',
+    'application_delete'           => 'application_delete.php',
+    'requirement_save'             => 'requirement_save.php',
+    'requirement_delete'           => 'requirement_delete.php',
+    'applicant_requirement_assign' => 'applicant_requirement_assign.php',
+    'applicant_requirement_update' => 'applicant_requirement_update.php',
+    'applicant_requirement_remove' => 'applicant_requirement_remove.php',
+    'interview_save'               => 'interview_save.php',
+    'interview_delete'             => 'interview_delete.php',
 ];
 
 ob_start();

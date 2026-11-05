@@ -32,7 +32,7 @@ INSERT INTO position (position_id, department_id, position_title, description, e
     (4, 2, 'Network Administrator', 'Manages office network infrastructure and security.',               'Full-time',  'Closed'),
     (5, 3, 'Accountant',            'Prepares financial statements and reconciles accounts.',            'Full-time',  'Open'),
     (6, 4, 'Marketing Associate',   'Assists with campaigns, social media, and content creation.',       'Part-time',  'Open'),
-    (7, 5, 'Operations Supervisor', 'Supervises daily operations and coordinates staff schedules.',      'Contract',   'On Hold'),
+    (7, 5, 'Operations Supervisor', 'Supervises daily operations and coordinates staff schedules.',      'Contract',   'Closed'),
     (8, 2, 'Database Administrator','Administers PostgreSQL databases, backups, and user privileges.',   'Full-time',  'Open')
 ON CONFLICT DO NOTHING;
 
@@ -84,7 +84,7 @@ ON CONFLICT DO NOTHING;
 -- ---------------------------------------------------------------------
 -- INTERVIEW (8)
 -- ---------------------------------------------------------------------
-INSERT INTO interview (interview_id, application_id, interview_date, interview_type, result, notes) VALUES
+INSERT INTO interview (interview_id, application_id, interview_date, interview_type, results, notes) VALUES
     (1, 1,  '2026-10-20 10:00:00', 'Phone',     'Passed',  'Good communication skills; proceeds to panel interview.'),
     (2, 1,  '2026-11-05 14:00:00', 'Panel',     'Pending', 'Scheduled with HR manager and department head.'),
     (3, 4,  '2026-10-15 09:00:00', 'In-person', 'Passed',  'Strong HR background and relevant experience.'),

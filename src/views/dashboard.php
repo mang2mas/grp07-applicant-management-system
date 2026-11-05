@@ -15,7 +15,7 @@ $counts = db_query(
         (SELECT COUNT(*)
            FROM interview
           WHERE interview_date >= CAST(:now AS timestamp)
-            AND COALESCE(result, 'Pending') = 'Pending') AS upcoming_interviews",
+            AND COALESCE(results, 'Pending') = 'Pending') AS upcoming_interviews",
     [':now' => $now]
 )->fetch();
 
@@ -38,7 +38,7 @@ $recentApplications = db_query(
 )->fetchAll();
 
 $nextInterviews = db_query(
-    'SELECT i.interview_id, i.interview_date, i.interview_type, i.result,
+    'SELECT i.interview_id, i.interview_date, i.interview_type, i.results,
             a.first_name, a.last_name, p.position_title
        FROM interview i
        JOIN application ap ON ap.application_id = i.application_id
@@ -147,7 +147,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <td class="px-4 py-2"><?= e($row['first_name'] . ' ' . $row['last_name']) ?></td>
                     <td class="px-4 py-2"><?= e($row['position_title']) ?></td>
                     <td class="px-4 py-2"><?= e($row['interview_type']) ?></td>
-                    <td class="px-4 py-2"><?= result_badge($row['result']) ?></td>
+                    <td class="px-4 py-2"><?= result_badge($row['results']) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$nextInterviews): ?>

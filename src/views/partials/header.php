@@ -6,12 +6,32 @@
 $pageTitle = $pageTitle ?? 'Applicant Management System';
 $activeNav = $activeNav ?? '';
 
-$navItems = [
-    'dashboard'    => ['Dashboard', url('dashboard')],
-    'applicants'   => ['Applicants', url('applicants')],
-    'applications' => ['Applications', url('applications')],
-    'positions'    => ['Positions', url('positions')],
-    'status'       => ['System Status', url('status')],
+$navGroups = [
+    'applicants' => [
+        'label' => 'Applicants',
+        'pages' => [
+            'applicants' => ['Applicants', url('applicants')],
+            'applicant_requirements' => ['Applicant Requirements', url('applicant_requirements')],
+        ],
+    ],
+
+    'recruitment' => [
+        'label' => 'Recruitment',
+        'pages' => [
+            'applications' => ['Applications', url('applications')],
+            'positions' => ['Positions', url('positions')],
+            'departments' => ['Departments', url('departments')],
+            'requirements' => ['Requirements', url('requirements')],
+            'interviews' => ['Interviews', url('interviews')],
+        ],
+    ],
+
+    'system' => [
+        'label' => 'System',
+        'pages' => [
+            'status' => ['System Status', url('status')],
+        ],
+    ],
 ];
 
 $flashStyles = [
@@ -35,12 +55,55 @@ $flashes = flash_pull();
         <a href="<?= e(url('dashboard')) ?>" class="text-lg font-semibold tracking-tight">
             AMS <span class="font-normal text-slate-400">· Applicant Management System</span>
         </a>
-        <nav class="flex flex-wrap gap-1" aria-label="Main">
-            <?php foreach ($navItems as $key => [$label, $href]): ?>
-                <a href="<?= e($href) ?>"
-                   class="rounded-md px-3 py-1.5 text-sm font-medium <?= $key === $activeNav ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>"
-                   <?= $key === $activeNav ? 'aria-current="page"' : '' ?>><?= e($label) ?></a>
+        <nav class="flex flex-wrap items-center gap-2" aria-label="Main">
+
+            <!-- Dashboard -->
+            <a href="<?= e(url('dashboard')) ?>"
+            class="rounded-md px-3 py-2 text-sm font-medium
+            <?= $activeNav === 'dashboard'
+                ? 'bg-slate-700 text-white'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+                Dashboard
+            </a>
+
+            <!-- Dropdown menus -->
+            <?php foreach ($navGroups as $group): ?>
+
+                <?php
+                $isGroupActive = array_key_exists($activeNav, $group['pages']);
+                ?>
+
+                <details class="relative">
+                    <summary
+                        class="cursor-pointer list-none rounded-md px-3 py-2 text-sm font-medium
+                        <?= $isGroupActive
+                            ? 'bg-slate-700 text-white'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>"
+                    >
+                        <?= e($group['label']) ?>
+                        <span class="ml-1 text-xs">▼</span>
+                    </summary>
+
+                    <div class="absolute left-0 z-50 mt-2 min-w-52 overflow-hidden rounded-md border border-slate-700 bg-slate-800 py-1 shadow-lg">
+
+                        <?php foreach ($group['pages'] as $key => [$label, $href]): ?>
+
+                            <a href="<?= e($href) ?>"
+                            class="block px-4 py-2 text-sm
+                            <?= $key === $activeNav
+                                ? 'bg-slate-700 text-white'
+                                : 'text-slate-300 hover:bg-slate-700 hover:text-white' ?>"
+                            <?= $key === $activeNav ? 'aria-current="page"' : '' ?>>
+                                <?= e($label) ?>
+                            </a>
+
+                        <?php endforeach; ?>
+
+                    </div>
+                </details>
+
             <?php endforeach; ?>
+
         </nav>
     </div>
 </header>

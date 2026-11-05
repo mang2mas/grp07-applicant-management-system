@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS interview (
     application_id  INTEGER      NOT NULL,
     interview_date  TIMESTAMP    NOT NULL,
     interview_type  VARCHAR(30)  NOT NULL DEFAULT 'In-person',
-    result          VARCHAR(30)  DEFAULT 'Pending',
+    results          VARCHAR(30)  DEFAULT 'Pending',
     notes           TEXT,
     CONSTRAINT fk_interview_application
         FOREIGN KEY (application_id) REFERENCES application (application_id)
