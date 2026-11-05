@@ -189,21 +189,6 @@ This inserts the initial records required by the application.
 
 **Important:** Always execute the schema before the seed file. Some records depend on existing parent records and foreign key relationships.
 
-### Alternative: Using the PostgreSQL Command Line
-
-If PostgreSQL command-line tools are installed, you can execute the SQL files using:
-
-```bash
-psql -U postgres -d grp07_applicantdb -f db/01_schema.sql
-```
-
-Then execute the seed file:
-
-```bash
-psql -U postgres -d grp07_applicantdb -f db/02_seed.sql
-```
-
-Replace `postgres` with your PostgreSQL username if necessary.
 
 ## Running the Application
 
