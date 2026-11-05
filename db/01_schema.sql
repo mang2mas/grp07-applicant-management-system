@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS interview (
     application_id  INTEGER      NOT NULL,
     interview_date  TIMESTAMP    NOT NULL,
     interview_type  VARCHAR(30)  NOT NULL DEFAULT 'In-person',
-    results          VARCHAR(30)  DEFAULT 'Pending',
+    results         VARCHAR(30)  DEFAULT 'Pending',
     notes           TEXT,
     CONSTRAINT fk_interview_application
         FOREIGN KEY (application_id) REFERENCES application (application_id)
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS interview (
     CONSTRAINT ck_interview_type
         CHECK (interview_type IN ('Phone', 'Video', 'In-person', 'Panel', 'Technical')),
     CONSTRAINT ck_interview_result
-        CHECK (result IS NULL OR result IN ('Pending', 'Passed', 'Failed', 'No Show', 'Rescheduled'))
+        CHECK (results IS NULL OR results IN ('Pending', 'Passed', 'Failed', 'No Show', 'Rescheduled'))
 );
 
 -- ---------------------------------------------------------------------
