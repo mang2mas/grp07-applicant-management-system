@@ -196,20 +196,20 @@ require SRC_PATH . '/views/partials/header.php';
                 </div>
 
                 <div>
-                    <label for="result" class="block text-sm font-medium text-gray-700">
+                    <label for="results" class="block text-sm font-medium text-gray-700">
                         Interview result
                     </label>
 
                     <select
-                        id="result"
-                        name="result"
+                        id="results"
+                        name="results"
                         required
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                     >
                         <?php foreach ($results as $result): ?>
                             <option
                                 value="<?= e($result) ?>"
-                                <?= ($val('result') ?: 'Pending') === $result ? 'selected' : '' ?>
+                                <?= ($val('results') ?: 'Pending') === $result ? 'selected' : '' ?>
                             >
                                 <?= e($result) ?>
                             </option>

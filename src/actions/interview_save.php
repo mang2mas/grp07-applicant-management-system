@@ -1,13 +1,21 @@
 <?php
 
+// Session guard: Viewer accounts are read-only.
+if (($_SESSION['role'] ?? '') === 'Viewer') {
+    throw new HttpException(403, 'Your Viewer account is read-only.');
+}
+
 $id = filter_var($_POST['interview_id'] ?? '', FILTER_VALIDATE_INT);
 $id = ($id !== false && $id > 0) ? $id : null;
+
+// The column is `results`; accept the legacy field name `result` as a fallback.
+$results = trim((string) ($_POST['results'] ?? $_POST['result'] ?? 'Pending'));
 
 $data = [
     'application_id' => trim((string) ($_POST['application_id'] ?? '')),
     'interview_date' => trim((string) ($_POST['interview_date'] ?? '')),
     'interview_type' => trim((string) ($_POST['interview_type'] ?? 'In-person')),
-    'result' => trim((string) ($_POST['result'] ?? 'Pending')),
+    'results' => $results,
     'notes' => trim((string) ($_POST['notes'] ?? '')),
 ];
 
@@ -73,8 +81,8 @@ $allowedResults = [
     'Rescheduled',
 ];
 
-if (!in_array($data['result'], $allowedResults, true)) {
-    $errors['result'] = 'Select a valid interview result.';
+if (!in_array($data['results'], $allowedResults, true)) {
+    $errors['results'] = 'Select a valid interview result.';
 }
 
 // Validate notes.
@@ -99,7 +107,7 @@ $params = [
     ':application_id' => (int) $applicationId,
     ':interview_date' => $interviewDate,
     ':interview_type' => $data['interview_type'],
-    ':result' => $data['result'],
+    ':results' => $data['results'],
     ':notes' => $data['notes'] !== '' ? $data['notes'] : null,
 ];
 
@@ -110,7 +118,7 @@ if ($id) {
             SET application_id = :application_id,
                 interview_date = :interview_date,
                 interview_type = :interview_type,
-                result = :result,
+                results = :results,
                 notes = :notes
           WHERE interview_id = :id',
         $params + [':id' => $id]
@@ -135,14 +143,14 @@ if ($id) {
             application_id,
             interview_date,
             interview_type,
-            result,
+            results,
             notes
         )
         VALUES (
             :application_id,
             :interview_date,
             :interview_type,
-            :result,
+            :results,
             :notes
         )',
         $params
