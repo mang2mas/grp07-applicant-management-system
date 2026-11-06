@@ -35,7 +35,101 @@ The project uses PHP for server-side processing and PostgreSQL for database mana
 | Development Environment | Visual Studio Code |
 | Version Control | Git and GitHub |
 
-## Prerequisites
+## Prerequisites in XAMPP
+
+Before running the project locally, ensure you have the following installed on your machine:
+
+- **XAMPP** (with PHP 8.x installed at `C:\xampp\php\php.exe`)
+- **PostgreSQL 18** (installed at `C:\Program Files\PostgreSQL\18\bin\psql.exe`)
+- **Git**
+
+---
+
+## XAMPP & PHP Configuration
+
+PostgreSQL extensions must be enabled in XAMPP's `php.ini` file before launching the server:
+
+1. Open `C:\xampp\php\php.ini` in a text editor (or click **Config** > **php.ini** next to Apache in the XAMPP Control Panel).
+2. Search for `pdo_pgsql` and `pgsql`.
+3. Remove the leading semicolon `;` from both lines so they look like this:
+   ```ini
+   extension=pdo_pgsql
+   extension=pgsql
+   ```
+4. Save the file.
+
+---
+
+## Environment Setup & Installation
+
+### 1. Clone the Repository
+Open PowerShell and navigate to your working directory:
+```powershell
+git clone https://github.com/mang2mas/grp07-applicant-management-system
+
+cd grp07-applicant-management-system
+```
+
+### 2. Configure Environment File (`.env`)
+Create a `.env` file in the project root by copying `.env.example`:
+```powershell
+Copy-Item .env.example .env
+```
+Open `.env` in VS Code and update your database credentials matching your local PostgreSQL installation:
+```env
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_NAME=grp07_applicantdb
+DB_USER=postgres
+DB_PASSWORD=your_actual_postgres_password
+DB_SSLMODE=disable
+```
+
+---
+
+## Database Initialization (PostgreSQL)
+
+Run the following commands in PowerShell to create the database, reset schema objects, and seed initial test data.
+
+### Step 1: Create Database
+Open `psql` or run directly in PowerShell:
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE grp07_applicantdb;"
+```
+
+### Step 2: Import Schema & Seed Data
+Execute the SQL files in exact numerical order:
+
+```powershell
+# 1. Clear existing schema objects (Fresh Reset)
+
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d grp07_applicantdb -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+# 2. Run Database Schema Script
+
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d grp07_applicantdb -f db/01_schema.sql
+
+# 3. Seed Test Accounts & Initial Data
+
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d grp07_applicantdb -f db/02_seed.sql
+```
+
+---
+
+## Running the Application
+
+Launch the local PHP server using the XAMPP PHP executable:
+
+```powershell
+& "C:\xampp\php\php.exe" -S localhost:8000 -t public
+```
+
+Open your browser and visit:  
+**`http://localhost:8000`**
+
+
+## Prerequisites Standard
+
 
 Before installing the project, make sure the following are installed on your computer:
 
