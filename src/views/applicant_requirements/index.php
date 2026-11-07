@@ -179,7 +179,7 @@ require SRC_PATH . '/views/partials/header.php';
                         <th class="px-4 py-3">Submission status</th>
                         <th class="px-4 py-3">Submitted date</th>
                         <th class="px-4 py-3">Remarks</th>
-                        <th class="px-4 py-3 text-right">Action</th>
+                        <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Action' ?></th>
                     </tr>
                 </thead>
 
@@ -243,7 +243,7 @@ require SRC_PATH . '/views/partials/header.php';
                             </td>
 
                             <td class="px-4 py-3">
-                                <?php if (!$isAssigned): ?>
+                                <?php if (!is_viewer()): ?><?php if (!$isAssigned): ?>
 
                                     <form method="post" action="index.php">
                                         <?= csrf_field() ?>
@@ -344,7 +344,7 @@ require SRC_PATH . '/views/partials/header.php';
                                         </button>
                                     </form>
 
-                                <?php endif; ?>
+                                <?php endif; ?><?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

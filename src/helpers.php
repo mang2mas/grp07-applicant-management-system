@@ -316,3 +316,25 @@ function form_input(string $name, string $label, string $value, array $errors, s
     }
     return $html . '</div>';
 }
+
+/* ------------------------------------------------------------------ */
+/* Authentication and roles                                           */
+/* ------------------------------------------------------------------ */
+
+/** True when a user is signed in (login_process.php sets $_SESSION['user_id']). */
+function is_logged_in(): bool
+{
+    return isset($_SESSION['user_id']);
+}
+
+/** Read-only account: may browse every page but cannot create, edit or delete. */
+function is_viewer(): bool
+{
+    return ($_SESSION['role'] ?? '') === 'Viewer';
+}
+
+/** Administrator and Staff may create, edit and delete records. */
+function can_write(): bool
+{
+    return is_logged_in() && !is_viewer();
+}

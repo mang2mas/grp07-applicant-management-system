@@ -16,9 +16,9 @@ $params = [];
 
 if ($q !== '') {
     $where[] = "(
-        a.first_name ILIKE :search1 ESCAPE '\\'
-        OR a.last_name ILIKE :search2 ESCAPE '\\'
-        OR p.position_title ILIKE :search3 ESCAPE '\\'
+        a.first_name ILIKE :search1
+        OR a.last_name ILIKE :search2
+        OR p.position_title ILIKE :search3
     )";
 
     $search = '%' . like_escape($q) . '%';
@@ -29,7 +29,7 @@ if ($q !== '') {
 }
 
 if ($resultFilter !== '') {
-    $where[] = 'i.result = :result';
+    $where[] = 'i.results = :result';
     $params[':result'] = $resultFilter;
 }
 
@@ -55,7 +55,7 @@ $interviews = db_query(
             i.application_id,
             i.interview_date,
             i.interview_type,
-            i.results AS result,
+            i.results,
             i.notes,
             a.first_name,
             a.last_name,
@@ -87,10 +87,10 @@ require SRC_PATH . '/views/partials/header.php';
         </p>
     </div>
 
-    <a href="<?= e(url('interview_form')) ?>"
+    <?php if (!is_viewer()): ?><a href="<?= e(url('interview_form')) ?>"
        class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
         + Schedule Interview
-    </a>
+    </a><?php endif; ?>
 </div>
 
 <!-- Search and filters -->
@@ -162,7 +162,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <th class="px-4 py-3">Interview Date</th>
                     <th class="px-4 py-3">Interview Type</th>
                     <th class="px-4 py-3">Result</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
 
@@ -171,7 +171,7 @@ require SRC_PATH . '/views/partials/header.php';
                 <?php foreach ($interviews as $interview): ?>
 
                     <?php
-                    $resultTone = match ($interview['result']) {
+                    $resultTone = match ($interview['results']) {
                         'Passed' => 'bg-green-50 text-green-700',
                         'Failed' => 'bg-red-50 text-red-700',
                         'No Show' => 'bg-gray-100 text-gray-700',
@@ -202,12 +202,12 @@ require SRC_PATH . '/views/partials/header.php';
 
                         <td class="px-4 py-3">
                             <span class="rounded-full px-2 py-1 text-xs font-medium <?= e($resultTone) ?>">
-                                <?= e($interview['result'] ?? 'Pending') ?>
+                                <?= e($interview['results'] ?? 'Pending') ?>
                             </span>
                         </td>
 
                         <td class="px-4 py-3 text-right whitespace-nowrap">
-                            <a href="<?= e(url('interview_form', [
+                            <?php if (!is_viewer()): ?><a href="<?= e(url('interview_form', [
                                 'id' => $interview['interview_id']
                             ])) ?>"
                                class="text-indigo-600 hover:underline">
@@ -228,7 +228,7 @@ require SRC_PATH . '/views/partials/header.php';
                                         class="text-red-600 hover:underline">
                                     Delete
                                 </button>
-                            </form>
+                            </form><?php endif; ?>
                         </td>
                     </tr>
 

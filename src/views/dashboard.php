@@ -86,7 +86,7 @@ require SRC_PATH . '/views/partials/header.php';
                 <?php foreach ($recentApplicants as $row): ?>
                     <tr>
                         <td class="px-4 py-2">
-                            <a href="<?= e(url('applicant_form', ['id' => $row['applicant_id']])) ?>" class="font-medium text-indigo-700 hover:underline"><?= e($row['first_name'] . ' ' . $row['last_name']) ?></a>
+                            <a href="<?= e(can_write() ? url('applicant_form', ['id' => $row['applicant_id']]) : url('applicants', ['q' => $row['email']])) ?>" class="font-medium text-indigo-700 hover:underline"><?= e($row['first_name'] . ' ' . $row['last_name']) ?></a>
                             <div class="text-xs text-gray-500"><?= e($row['email']) ?></div>
                         </td>
                         <td class="px-4 py-2 text-gray-600"><?= e(format_date($row['created_at'])) ?></td>

@@ -62,7 +62,7 @@ require SRC_PATH . '/views/partials/header.php';
         <h1 class="text-2xl font-semibold">Positions</h1>
         <p class="mt-1 text-sm text-gray-600">Create and manage job openings across departments.</p>
     </div>
-    <a href="<?= e(url('position_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Add position</a>
+    <?php if (!is_viewer()): ?><a href="<?= e(url('position_form')) ?>" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">+ Add position</a><?php endif; ?>
 </div>
 
 <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -114,7 +114,7 @@ require SRC_PATH . '/views/partials/header.php';
                 <tr>
                     <th class="px-4 py-3">Position</th><th class="px-4 py-3">Department</th>
                     <th class="px-4 py-3">Employment type</th><th class="px-4 py-3">Applications</th>
-                    <th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Actions</th>
+                    <th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right"><?= is_viewer() ? '' : 'Actions' ?></th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -129,7 +129,7 @@ require SRC_PATH . '/views/partials/header.php';
                     <td class="px-4 py-3"><?= e($row['application_count']) ?></td>
                     <td class="px-4 py-3"><?= position_badge($row['status']) ?></td>
                     <td class="px-4 py-3">
-                        <div class="flex items-center justify-end gap-3">
+                        <?php if (!is_viewer()): ?><div class="flex items-center justify-end gap-3">
                             <a href="<?= e(url('position_form', ['id' => $row['position_id']])) ?>" class="text-indigo-600 hover:underline">Edit</a>
                             <?php if ((int) $row['application_count'] === 0): ?>
                                 <form method="post" action="index.php" class="inline" onsubmit="<?= js_confirm('Delete the position ' . $row['position_title'] . '? This cannot be undone.') ?>">
@@ -142,7 +142,7 @@ require SRC_PATH . '/views/partials/header.php';
                             <?php else: ?>
                                 <span class="text-xs text-gray-400" title="This position has applications and cannot be deleted.">In use</span>
                             <?php endif; ?>
-                        </div>
+                        </div><?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -168,3 +168,15 @@ CREATE INDEX IF NOT EXISTS idx_interview_application   ON interview (application
 CREATE INDEX IF NOT EXISTS idx_interview_date          ON interview (interview_date);
 CREATE INDEX IF NOT EXISTS idx_appreq_requirement      ON applicant_requirement (requirement_id);
 CREATE INDEX IF NOT EXISTS idx_applicant_last_name     ON applicant (last_name, first_name);
+
+-- ---------------------------------------------------------------------
+-- USERS  (web-application login accounts, used by the authentication system)
+-- password_hash stores a PHP password_hash() BCRYPT value, never a plain password.
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS users (
+    user_id        SERIAL PRIMARY KEY,
+    username       VARCHAR(50)  UNIQUE NOT NULL,
+    password_hash  VARCHAR(255) NOT NULL,
+    role           VARCHAR(30)  NOT NULL CHECK (role IN ('Administrator', 'Staff', 'Viewer')),
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
